@@ -26,10 +26,19 @@ git clone https://github.com/JamesWu1013/restaurant_list.git
 cd restaurant_list
 npm install
 
-### 第四步驟
+###第四步驟
+新增種子資料
+npm run seed
+
+### 第五步驟
+起動程式
 npm run dev
 
 ## 會使用到的套件與編輯器
 + Express 
 + Express-Handlebars
++ dotenv
++ mongoose
++ body-parser
 + Visula Studio Code
+
