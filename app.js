@@ -104,7 +104,7 @@ app.post('/restaurants/:id/edit', (req, res) => {
   return Restaurant.findById(id)
     .then((restaurant) => {
       console.log(restaurant, 11111)
-        restaurant.id = fakeId,
+      restaurant.id = fakeId,
         restaurant.name = name,
         restaurant.name_en = name_en,
         restaurant.category = category,
@@ -129,13 +129,28 @@ app.post('/restaurants/:id/delete', (req, res) => {
     .catch(error => console.log(error))
 })
 
-app.get('/search', (req, res) => {
-  const keyword = req.query.keyword
-  const searchRestaurants = Restaurant.results.filter((restaurant) => {
-    return restaurant.name.toLowerCase().includes(keyword.toLowerCase()) || restaurant.category.toLowerCase().includes(keyword.toLowerCase())
-  })
-  res.render('index', { restaurant: searchRestaurants, keyword: keyword })
-})//先不管
+app.get("/search", (req, res) => {
+  if (!req.query.keyword) {
+    return res.redirect("/");
+  }
+
+  const keywords = req.query.keyword.toLowerCase().trim();
+  Restaurant.find()
+    .lean()
+    .then((Restaurant) => {
+      const filterRestaurants = Restaurant.filter(
+        (restaurant) =>
+          restaurant.name.toLowerCase().includes(keywords) ||
+          restaurant.category.toLowerCase().includes(keywords)
+      );
+      res.render("index", {
+        restaurant: filterRestaurants,
+        keywords
+      });
+    })
+    .catch((error) => console.log(error));
+});
+
 
 app.listen(port, () => {
   console.log(`Express is listening on localhost: ${port}`)
