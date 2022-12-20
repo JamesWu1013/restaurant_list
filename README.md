@@ -26,7 +26,7 @@ git clone https://github.com/JamesWu1013/restaurant_list.git
 cd restaurant_list
 npm install
 
-###第四步驟
+### 第四步驟
 新增種子資料
 npm run seed
 
