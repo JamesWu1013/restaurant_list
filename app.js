@@ -7,6 +7,7 @@ const Restaurant = require('./models/restaurant')
 const bodyParser = require('body-parser')
 
 const mongoose = require('mongoose') // 載入 mongoose
+const restaurant = require('./models/restaurant')
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
@@ -120,6 +121,13 @@ app.post('/restaurants/:id/edit', (req, res) => {
 
 })
 
+app.post('/restaurants/:id/delete', (req, res) => {
+  const id = req.params.id
+  return Restaurant.findById(id)
+    .then(restaurant => restaurant.remove())
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
 
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword

@@ -33,7 +33,9 @@
             </div>
             <a href="./restaurants/{{ this._id }}">detail</a>
             <a href="./restaurants/{{ this._id }}/edit">edit</a>
-            <a href="./restaurants/{{ this._id }}/delete">delete</a>
+            <form action="./restaurants/{{ this._id }}/delete" method="POST" style="display: inline;">
+              <button type="submit">delete</button>
+            </form>
 
             <span class="badge badge-pill badge-danger font-weight-normal">
               4.1
