@@ -33,9 +33,9 @@ app.use(express.static('public'))
 
 app.get('/', (req, res) => {
   Restaurant.find()
-          .lean()
-          .then(restaurant => res.render('index', {restaurant}))
-          .catch(error => console.log(error))
+    .lean()
+    .then(restaurant => res.render('index', { restaurant }))
+    .catch(error => console.log(error))
 
 })
 
@@ -53,7 +53,7 @@ app.post('/restaurants', (req, res) => {
   const phone = req.body.phone
   const google_map = req.body.google_map
   const rating = req.body.rating
-  const description = req.body.description     
+  const description = req.body.description
   return Restaurant.create({
     id,
     name,
@@ -65,7 +65,7 @@ app.post('/restaurants', (req, res) => {
     google_map,
     rating,
     description
-   })     // 存入資料庫
+  })     // 存入資料庫
     .then(() => res.redirect('/')) // 新增完成後導回首頁
     .catch(error => console.log(error))
 })
@@ -75,10 +75,51 @@ app.get('/restaurants/:id', (req, res) => {
   const id = req.params.id
   return Restaurant.findById(id)
     .lean()
-    .then((restaurant) => res.render('show', {restaurant}))
+    .then((restaurant) => res.render('show', { restaurant }))
     .catch(error => console.log(error))
 
 })
+
+app.get('/restaurants/:id/edit', (req, res) => {
+  const id = req.params.id
+  return Restaurant.findById(id)
+    .lean()
+    .then((restaurant) => res.render('edit', { restaurant }))
+    .catch(error => console.log(error))
+
+})
+app.post('/restaurants/:id/edit', (req, res) => {
+  const id = req.params.id
+  const fakeId = req.body.id
+  const name = req.body.name
+  const name_en = req.body.name_en
+  const category = req.body.category
+  const image = req.body.image
+  const location = req.body.location
+  const phone = req.body.phone
+  const google_map = req.body.google_map
+  const rating = req.body.rating
+  const description = req.body.description
+  return Restaurant.findById(id)
+    .then((restaurant) => {
+      console.log(restaurant, 11111)
+        restaurant.id = fakeId,
+        restaurant.name = name,
+        restaurant.name_en = name_en,
+        restaurant.category = category,
+        restaurant.image = image,
+        restaurant.location = location,
+        restaurant.phone = phone,
+        restaurant.google_map = google_map,
+        restaurant.rating = rating,
+        restaurant.description = description
+      return restaurant.save()
+    })
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+
+})
+
 
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword
