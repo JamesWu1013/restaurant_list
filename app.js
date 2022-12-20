@@ -2,7 +2,8 @@ const express = require('express')
 const app = express()
 const port = 3000
 const exphbs = require('express-handlebars')
-const restaurants = require('./restaurants.json')
+//const restaurants = require('./restaurants.json')
+const Restaurant = require('./models/restaurant')
 
 const mongoose = require('mongoose') // 載入 mongoose
 if (process.env.NODE_ENV !== 'production') {
@@ -28,7 +29,11 @@ app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
-  res.render('index', { restaurants: restaurants.results })
+  Restaurant.find()
+          .lean()
+          .then(restaurant => res.render('index', {restaurant}))
+          .catch(error => console.log(error))
+
 })
 
 app.get('/restaurants/:restaurants_id', (req, res) => {
